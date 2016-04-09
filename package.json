@@ -1,0 +1,25 @@
+{
+  "name": "js-cqrs",
+  "version": "1.0.0",
+  "description": "Very simple CQRS implementation in javascript",
+  "main": "src/mediatr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebandres/mediatr.git"
+  },
+  "keywords": [
+    "mediator",
+    "mediatr",
+    "javascript"
+  ],
+  "author": "Sebastian Paulo Andres",
+  "email":  "sebandres@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebandres/mediatr/issues"
+  },
+  "homepage": "https://github.com/sebandres/mediatr#readme"
+}
