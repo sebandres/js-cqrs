@@ -1,0 +1,23 @@
+{
+  "name": "js-cqrs-examples",
+  "version": "1.0.0",
+  "description": "Examples of usage of npm package js-cqrs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebandres/js-cqrs.git"
+  },
+  "author": "Sebastian Paulo Andres <sebandres@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebandres/js-cqrs/issues"
+  },
+  "homepage": "https://github.com/sebandres/js-cqrs#readme",
+  "dependencies": {
+    "jquery": "^2.2.3",
+    "js-cqrs": "^2.0.6"
+  }
+}
