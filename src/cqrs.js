@@ -7,15 +7,15 @@ var Cqrs = function () {
         var commandHandlers = new Array();
         var eventListeners = new Array();
         return {
-            AddCommandHandler: function (command, commandHandler) {
-                commandHandlers[command.name] = commandHandler;
+            AddCommandHandler: function (command, commandHandler, context) {
+                commandHandlers[command.name] = {handler: commandHandler, context: context};
             },
-            AddEventListener: function (event, eventListener) {
+            AddEventListener: function (event, eventListener, context) {
                 if (!eventListeners[event.name])
                 {
                     eventListeners[event.name] = new Array();
                 }
-                eventListeners[event.name].push(eventListener);
+                eventListeners[event.name].push({listener: eventListener, context: context});
             },
             RemoveCommandHandler: function (command, commandHandler) {
                 commandHandlers[command.name] = null;
@@ -35,13 +35,14 @@ var Cqrs = function () {
                 {
                     throw "Command " + command.constructor.name + " has no handler.";
                 }
-                return commandHandlers[command.constructor.name](command);
+                var commandHandler = commandHandlers[command.constructor.name];
+                return commandHandler.handler(command, commandHandler.context);
             },
             Publish(event) {
                 if (!eventListeners[event.constructor.name])
                     return;
                 eventListeners[event.constructor.name].forEach(function (eventListener) {
-                    eventListener(event);
+                    eventListener.listener(event, eventListener.context);
                 });
             }
         };
