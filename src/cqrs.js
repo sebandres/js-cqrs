@@ -30,7 +30,7 @@ var Cqrs = function () {
                     }
                 }
             },
-            Send(command) {
+            Send: function (command) {
                 if (!commandHandlers[command.constructor.name]) 
                 {
                     throw "Command " + command.constructor.name + " has no handler.";
@@ -38,7 +38,7 @@ var Cqrs = function () {
                 var commandHandler = commandHandlers[command.constructor.name];
                 return commandHandler.handler(command, commandHandler.context);
             },
-            Publish(event) {
+            Publish: function (event) {
                 if (!eventListeners[event.constructor.name])
                     return;
                 eventListeners[event.constructor.name].forEach(function (eventListener) {
