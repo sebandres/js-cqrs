@@ -22,9 +22,9 @@ var Cqrs = function () {
             },
             RemoveEventListener: function (event, eventListener) {
                 var specificEventListeners = eventListeners[event.name];
-                if (!(!specificEventListeners)) {
-                    for (var i = specificEventListeners.length; i--;) {
-                        if (specificEventListeners[i] === eventListener) {
+                if (specificEventListeners) {
+                    for (var i = specificEventListeners.length - 1; i >= 0; i--) {
+                        if (specificEventListeners[i].listener === eventListener) {
                             specificEventListeners.splice(i, 1);
                         }
                     }
