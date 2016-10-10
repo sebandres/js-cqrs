@@ -1,8 +1,4 @@
-# Usage
-
-js-cqrs is a lightweight and easy to use implementation of the cqrs pattern. It allows for quick integration due to simplified API.
-
-```
+import { Cqrs, Event, EventListener, Command, CommandHandler } from "../index";
 
 export class SaveUserRequest implements Command{
 	data: any;
@@ -41,15 +37,17 @@ class EventListener2 implements EventListener {
 	}
 }
 
-Cqrs.Instance.AddCommandHandler(SaveUserRequest.prototype, new SaveUserRequestHandler(), null);
-Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener1(), null);
-Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener2(), null);
+describe('Cqrs', () => {
+  it('Maps commands and events together', () => {
+    Cqrs.Instance.AddCommandHandler(SaveUserRequest.prototype, new SaveUserRequestHandler(), null);
+		Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener1(), null);
+		Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener2(), null);
 
-let newSaveUserCommand = new SaveUserRequest({ id: '1', firstName: 'Sebastian' });
-Cqrs.Instance.Send(newSaveUserCommand);
+		let newSaveUserCommand = new SaveUserRequest({ id: '1', firstName: 'Sebastian' });
+		Cqrs.Instance.Send(newSaveUserCommand);
 
-expect(EventListener1.processed).toBe(true);
-expect(EventListener2.processed).toBe(true);
-expect(EventListener1.firstName).toBe("Sebastian");
-
-```
+    expect(EventListener1.processed).toBe(true);
+    expect(EventListener2.processed).toBe(true);
+    expect(EventListener1.firstName).toBe("Sebastian");
+  });
+});

@@ -2,9 +2,9 @@
   "name": "js-cqrs",
   "version": "2.0.14",
   "description": "Very simple CQRS implementation in javascript",
-  "main": "src/cqrs.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -16,11 +16,23 @@
     "mediatr",
     "javascript"
   ],
+  "jest": {
+    "testPathDirs": [
+      "dist/"
+    ],
+    "testRegex": "__tests__/.*$"
+  },
   "author": "Sebastian Paulo Andres",
   "email": "sebandres@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sebandres/js-cqrs/issues"
   },
-  "homepage": "https://github.com/sebandres/js-cqrs#readme"
+  "homepage": "https://github.com/sebandres/js-cqrs#readme",
+  "dependencies": {
+    "typescript": "^2.0.3"
+  },
+  "devDependencies": {
+    "jest-cli": "^16.0.1"
+  }
 }
