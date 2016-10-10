@@ -1,0 +1,5 @@
+{
+  "globalDependencies": {
+    "jest": "registry:dt/jest#15.1.1+20160919141445"
+  }
+}

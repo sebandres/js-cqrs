@@ -48,3 +48,5 @@ Temporary Items
 
 # Node
 node_modules
+*.js
+*.map
