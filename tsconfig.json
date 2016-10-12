@@ -2,7 +2,6 @@
     "compilerOptions": {
         "sourceMap": true,
         "target": "es5",
-        "module": "commonjs",
-        "outDir": "dist"
+        "module": "commonjs"
     }
 }
