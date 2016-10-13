@@ -22,19 +22,19 @@ export class Cqrs {
         this.eventListeners = new Array<Array<EventListenerContainer>>();
     }
     AddCommandHandler(command: Command, commandHandler: CommandHandler, context) {
-        this.commandHandlers[typeof command.constructor.prototype] = { handler: commandHandler, context: context };
+        this.commandHandlers[command.name] = { handler: commandHandler, context: context };
     }
     AddEventListener(event: Event, EventListener: EventListener, context) {
-        if (!this.eventListeners[typeof event.constructor.prototype]) {
-            this.eventListeners[typeof event.constructor.prototype] = new Array();
+        if (!this.eventListeners[event.name]) {
+            this.eventListeners[event.name] = new Array();
         }
-        this.eventListeners[typeof event.constructor.prototype].push({ listener: EventListener, context: context });
+        this.eventListeners[event.name].push({ listener: EventListener, context: context });
     }
     RemoveCommandHandler(command: Command, commandHandler) {
-        this.commandHandlers[typeof command.constructor.prototype] = null;
+        this.commandHandlers[command.name] = null;
     }
     RemoveEventListener(event: Event, EventListenerContainer) {
-        var specificEventListeners = this.eventListeners[typeof event.constructor.prototype];
+        var specificEventListeners = this.eventListeners[event.name];
         if (specificEventListeners) {
             for (var i = specificEventListeners.length - 1; i >= 0; i--) {
                 if (specificEventListeners[i].listener === EventListenerContainer) {
@@ -44,16 +44,16 @@ export class Cqrs {
         }
     }
     Send(command: Command) {
-        if (!this.commandHandlers[typeof command.constructor.prototype]) {
-            throw "Command " + typeof command.constructor.prototype + " has no handler.";
+        if (!this.commandHandlers[command.constructor.name]) {
+            throw "Command " + command.constructor.name + " has no handler.";
         }
-        var commandHandler = this.commandHandlers[typeof command.constructor.prototype];
+        var commandHandler = this.commandHandlers[command.constructor.name];
         return commandHandler.handler.handle(command, commandHandler.context);
     }
     Publish(event: Event) {
-        if (!this.eventListeners[typeof event.constructor.prototype])
+        if (!this.eventListeners[event.constructor.name])
             return;
-        this.eventListeners[typeof event.constructor.prototype].forEach(function (EventListenerContainer: EventListenerContainer) {
+        this.eventListeners[event.constructor.name].forEach(function (EventListenerContainer: EventListenerContainer) {
             EventListenerContainer.listener.handle(event, EventListenerContainer.context);
         });
     }

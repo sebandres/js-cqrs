@@ -37,11 +37,12 @@ class EventListener2 implements EventListener {
 	}
 }
 
+Cqrs.Instance.AddCommandHandler(SaveUserRequest.prototype, new SaveUserRequestHandler(), null);
+Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener1(), null);
+Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener2(), null);
+
 describe('Cqrs', () => {
   it('Maps commands and events together', () => {
-    Cqrs.Instance.AddCommandHandler(SaveUserRequest.prototype, new SaveUserRequestHandler(), null);
-		Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener1(), null);
-		Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener2(), null);
 
 		let newSaveUserCommand = new SaveUserRequest({ id: '1', firstName: 'Sebastian' });
 		Cqrs.Instance.Send(newSaveUserCommand);
