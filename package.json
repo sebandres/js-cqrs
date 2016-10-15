@@ -1,6 +1,6 @@
 {
   "name": "js-cqrs",
-  "version": "3.0.3",
+  "version": "3.0.5",
   "description": "Very simple CQRS implementation in javascript",
   "main": "index.js",
   "scripts": {

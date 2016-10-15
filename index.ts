@@ -1,8 +1,10 @@
-﻿export class Event { }
-export class Command { }
+﻿export class Event { 
+}
+export class Command { 
+}
 
-export interface EventListener { handle(event: Event) }
-export interface CommandHandler { handle(command: Command) }
+export interface EventListener { handle(event: Event, context: any) }
+export interface CommandHandler { handle(command: Command, context: any) }
 
 interface EventListenerContainer { listener: any, context: any }
 interface CommandHandlerContainer { handler: any, context: any }
@@ -22,38 +24,38 @@ export class Cqrs {
         this.eventListeners = new Array<Array<EventListenerContainer>>();
     }
     AddCommandHandler(command: Command, commandHandler: CommandHandler, context) {
-        this.commandHandlers[command.name] = { handler: commandHandler, context: context };
+        this.commandHandlers[(command as any).name] = { handler: commandHandler, context: context };
     }
     AddEventListener(event: Event, EventListener: EventListener, context) {
-        if (!this.eventListeners[event.name]) {
-            this.eventListeners[event.name] = new Array();
+        if (!this.eventListeners[(event as any).name]) {
+            this.eventListeners[(event as any).name] = new Array();
         }
-        this.eventListeners[event.name].push({ listener: EventListener, context: context });
+        this.eventListeners[(event as any).name].push({ listener: EventListener, context: context });
     }
-    RemoveCommandHandler(command: Command, commandHandler) {
-        this.commandHandlers[command.name] = null;
+    RemoveCommandHandler(command: Command, commandHandler: CommandHandler) {
+        this.commandHandlers[(command as any).name] = null;
     }
-    RemoveEventListener(event: Event, EventListenerContainer) {
-        var specificEventListeners = this.eventListeners[event.name];
+    RemoveEventListener(event: Event, EventListener: EventListener) {
+        var specificEventListeners = this.eventListeners[(event as any).name];
         if (specificEventListeners) {
             for (var i = specificEventListeners.length - 1; i >= 0; i--) {
-                if (specificEventListeners[i].listener === EventListenerContainer) {
+                if (specificEventListeners[i].listener === EventListener) {
                     specificEventListeners.splice(i, 1);
                 }
             }
         }
     }
     Send(command: Command) {
-        if (!this.commandHandlers[command.constructor.name]) {
-            throw "Command " + command.constructor.name + " has no handler.";
+        if (!this.commandHandlers[(command.constructor as any).name]) {
+            throw "Command " + (command.constructor as any).name + " has no handler.";
         }
-        var commandHandler = this.commandHandlers[command.constructor.name];
+        var commandHandler = this.commandHandlers[(command.constructor as any).name];
         return commandHandler.handler.handle(command, commandHandler.context);
     }
     Publish(event: Event) {
-        if (!this.eventListeners[event.constructor.name])
+        if (!this.eventListeners[(event.constructor as any).name])
             return;
-        this.eventListeners[event.constructor.name].forEach(function (EventListenerContainer: EventListenerContainer) {
+        this.eventListeners[(event.constructor as any).name].forEach(function (EventListenerContainer: EventListenerContainer) {
             EventListenerContainer.listener.handle(event, EventListenerContainer.context);
         });
     }

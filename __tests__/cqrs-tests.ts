@@ -1,9 +1,8 @@
 import { Cqrs, Event, EventListener, Command, CommandHandler } from "../index";
 
-export class SaveUserRequest implements Command{
-	data: any;
-	constructor(data: any){
-			this.data = data;
+export class SaveUserRequest extends Command{
+	constructor(public data: any){
+		super()
 	}
 }
 
@@ -14,10 +13,9 @@ export class SaveUserRequestHandler implements CommandHandler {
 	}
 }
 
-export class UserSaved implements Event {
-    data: any;
-    constructor(data: any) {
-        this.data = data;
+export class UserSaved extends Event {
+    constructor(public data: any) {
+		super()
     }
 }
 
@@ -37,9 +35,10 @@ class EventListener2 implements EventListener {
 	}
 }
 
-Cqrs.Instance.AddCommandHandler(SaveUserRequest.prototype, new SaveUserRequestHandler(), null);
-Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener1(), null);
-Cqrs.Instance.AddEventListener(UserSaved.prototype, new EventListener2(), null);
+var listener2 = new EventListener2()
+Cqrs.Instance.AddCommandHandler(SaveUserRequest, new SaveUserRequestHandler(), null);
+Cqrs.Instance.AddEventListener(UserSaved, new EventListener1(), null);
+Cqrs.Instance.AddEventListener(UserSaved, listener2, null);
 
 describe('Cqrs', () => {
   it('Maps commands and events together', () => {
@@ -49,6 +48,22 @@ describe('Cqrs', () => {
 
     expect(EventListener1.processed).toBe(true);
     expect(EventListener2.processed).toBe(true);
+    expect(EventListener1.firstName).toBe("Sebastian");
+  });
+});
+
+describe('Cqrs', () => {
+  it('Should deal with removing listeners', () => {
+
+		EventListener2.processed = false;
+		
+		Cqrs.Instance.RemoveEventListener(UserSaved, listener2);
+
+		let newSaveUserCommand = new SaveUserRequest({ id: '1', firstName: 'Sebastian' });
+		Cqrs.Instance.Send(newSaveUserCommand);
+
+    expect(EventListener1.processed).toBe(true);
+    expect(EventListener2.processed).toBe(false);
     expect(EventListener1.firstName).toBe("Sebastian");
   });
 });
