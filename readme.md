@@ -1,3 +1,8 @@
+# THIS PROJECT HAS MOVED TO GITLAB!
+
+https://gitlab.com/sebandres/js-cqrs
+
+
 # Usage
 
 js-cqrs is a lightweight and easy to use implementation of the cqrs pattern. It allows for quick integration due to simplified API.
